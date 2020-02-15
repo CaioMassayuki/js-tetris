@@ -21,9 +21,9 @@ class Game {
     }
   }
 
-  collisionCheck(isDownCollision = false) {
+  collisionCheck(action, isDownCollision = false) {
     if (hasCollision(this.avatar)) {
-      this.avatar.resetPosition(this.avatar.afterPosition)
+      this.avatar.undoAction(action)
       if (isDownCollision) {
         updateArena(this.avatar)
         this.avatar.resetPosition()
@@ -36,19 +36,19 @@ class Game {
     document.addEventListener('keydown', event => {
       if (validateEventKey(event, LEFT_ARROW)) {
         this.control.moveAvatarLeft()
-        this.collisionCheck()
+        this.collisionCheck('MOVE')
       } else if (validateEventKey(event, RIGHT_ARROW)) {
         this.control.moveAvatarRight()
-        this.collisionCheck()
+        this.collisionCheck('MOVE')
       } else if (validateEventKey(event, DOWN_ARROW)) {
         this.control.moveAvatarDown()
-        this.collisionCheck(true)
+        this.collisionCheck('MOVE', true)
       } else if (validateEventKey(event, Z_KEY)) {
         this.control.rotateAvatar(ROTATE_LEFT)
-        this.collisionCheck()
+        this.collisionCheck('ROTATE')
       } else if (validateEventKey(event, X_KEY)) {
         this.control.rotateAvatar(ROTATE_RIGHT)
-        this.collisionCheck()
+        this.collisionCheck('ROTATE')
       }
     })
   }

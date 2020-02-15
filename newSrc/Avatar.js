@@ -7,15 +7,35 @@ class Avatar {
     this.bag = [...this.tetrominos.pieces]
     this.tetromino = tetromino || this.bagRandomizer()
     this.position = position || { x: 3, y: 0 }
-    this.afterPosition = null
+    this.savedPosition = null
+    this.savedStance = null
   }
 
-  resetPosition(newPosition = { x: 3, y: 0 }) {
-    this.position = { ...newPosition }
+  resetPosition() {
+    this.position = { x: 3, y: 0 }
+  }
+
+  undoAction(action) {
+    switch (action) {
+      case 'MOVE':
+        this.position = { ...this.savedPosition }
+        break
+      case 'ROTATE':
+        this.tetromino = this.savedStance
+          ? [...this.savedStance]
+          : this.tetromino
+        break
+      default:
+        console.log('NADA')
+    }
   }
 
   savePosition() {
-    this.afterPosition = { ...this.position }
+    this.savedPosition = { ...this.position }
+  }
+
+  saveStance() {
+    this.savedStance = [...this.tetromino]
   }
 
   rotate(direction) {

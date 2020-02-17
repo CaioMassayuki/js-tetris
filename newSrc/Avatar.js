@@ -1,5 +1,6 @@
 import Tetrominos from './tetrominos'
 import { ROTATE_RIGHT } from './constants'
+import { flipMatrix, rotateMatrix } from './utils/matrixHelpers'
 
 class Avatar {
   constructor(position, tetromino) {
@@ -26,7 +27,10 @@ class Avatar {
           : this.tetromino
         break
       default:
-        console.log('NADA')
+        this.position = { ...this.savedPosition }
+        this.tetromino = this.savedStance
+          ? [...this.savedStance]
+          : this.tetromino
     }
   }
 
@@ -39,17 +43,6 @@ class Avatar {
   }
 
   rotate(direction) {
-    const flipMatrix = matrix => {
-      const tetrominoLength = Object.keys(matrix)
-      const flippedMatrix = tetrominoLength.map(index => {
-        return matrix.map(row => row[index])
-      })
-      return flippedMatrix
-    }
-    const rotateMatrix = matrix => {
-      return [...matrix].reverse()
-    }
-
     if (direction === ROTATE_RIGHT) {
       this.tetromino = rotateMatrix(flipMatrix(this.tetromino))
     } else {

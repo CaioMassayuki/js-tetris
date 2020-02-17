@@ -17,7 +17,7 @@ class Game {
     if (this.clock.dropCounter > dropInterval) {
       this.clock.dropCounter = 0
       this.control.moveAvatarDown()
-      this.collisionCheck(true)
+      this.collisionCheck('MOVE', true)
     }
   }
 

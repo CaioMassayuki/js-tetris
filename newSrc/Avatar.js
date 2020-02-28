@@ -22,24 +22,16 @@ class Avatar {
         this.position = { ...this.savedPosition }
         break
       case 'ROTATE':
-        this.tetromino = this.savedStance
-          ? [...this.savedStance]
-          : this.tetromino
+        this.tetromino = this.savedStance ? [...this.savedStance] : this.tetromino
         break
       default:
         this.position = { ...this.savedPosition }
-        this.tetromino = this.savedStance
-          ? [...this.savedStance]
-          : this.tetromino
+        this.tetromino = this.savedStance ? [...this.savedStance] : this.tetromino
     }
   }
 
   savePosition() {
     this.savedPosition = { ...this.position }
-  }
-
-  saveStance() {
-    this.savedStance = [...this.tetromino]
   }
 
   rotate(direction) {

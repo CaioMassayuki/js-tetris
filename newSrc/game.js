@@ -16,14 +16,27 @@ class Game {
   isDropTick(dropInterval = this.clock.dropInterval) {
     if (this.clock.dropCounter > dropInterval) {
       this.clock.dropCounter = 0
-      this.control.moveAvatarDown()
+      this.control.moveAvatarDown(1)
       this.collisionCheck('MOVE', true)
     }
   }
 
   collisionCheck(action, isDownCollision = false) {
     if (hasCollision(this.avatar)) {
+      if (action === 'ROTATE') {
+        let offseat = 0
+        while (hasCollision(this.avatar)) {
+          offseat = -(offseat + (offseat > 0 ? 1 : -1))
+          if (offseat > 0) {
+            this.control.moveAvatarRight(offseat)
+          } else {
+            this.control.moveAvatarLeft(-offseat)
+          }
+        }
+      }
+
       this.avatar.undoAction(action)
+
       if (isDownCollision) {
         updateArena(this.avatar)
         this.avatar.resetPosition()
@@ -35,13 +48,13 @@ class Game {
   setupController() {
     document.addEventListener('keydown', event => {
       if (validateEventKey(event, LEFT_ARROW)) {
-        this.control.moveAvatarLeft()
+        this.control.moveAvatarLeft(1)
         this.collisionCheck('MOVE')
       } else if (validateEventKey(event, RIGHT_ARROW)) {
-        this.control.moveAvatarRight()
+        this.control.moveAvatarRight(1)
         this.collisionCheck('MOVE')
       } else if (validateEventKey(event, DOWN_ARROW)) {
-        this.control.moveAvatarDown()
+        this.control.moveAvatarDown(1)
         this.collisionCheck('MOVE', true)
       } else if (validateEventKey(event, Z_KEY)) {
         this.control.rotateAvatar(ROTATE_LEFT)

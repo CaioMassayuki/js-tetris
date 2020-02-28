@@ -3,20 +3,19 @@ class Joystick {
     this.avatar = avatar
   }
 
-  moveAvatarLeft() {
+  moveAvatarLeft(steps) {
     this.avatar.savePosition()
-    this.avatar.position.x--
+    this.avatar.position.x -= steps
   }
-  moveAvatarRight() {
+  moveAvatarRight(steps) {
     this.avatar.savePosition()
-    this.avatar.position.x++
+    this.avatar.position.x += steps
   }
-  moveAvatarDown() {
+  moveAvatarDown(steps) {
     this.avatar.savePosition()
-    this.avatar.position.y++
+    this.avatar.position.y += steps
   }
   rotateAvatar(direction) {
-    this.avatar.saveStance()
     this.avatar.rotate(direction)
   }
 }

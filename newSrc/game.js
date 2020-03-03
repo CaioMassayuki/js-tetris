@@ -6,6 +6,9 @@ import Avatar from './Avatar'
 import Joystick from './Joystick'
 import Playfield from './playfield'
 
+const isEven = num => num % 2 === 0
+const isOdd = num => !isEven(num)
+
 class Game {
   constructor() {
     this.avatar = new Avatar({ x: 3, y: 0 })
@@ -17,26 +20,13 @@ class Game {
     if (this.clock.dropCounter > dropInterval) {
       this.clock.dropCounter = 0
       this.control.moveAvatarDown(1)
-      this.collisionCheck('MOVE', true)
+      this.moveCollisionCheck(true)
     }
   }
 
-  collisionCheck(action, isDownCollision = false) {
+  moveCollisionCheck(isDownCollision = false) {
     if (hasCollision(this.avatar)) {
-      if (action === 'ROTATE') {
-        let offseat = 0
-        while (hasCollision(this.avatar)) {
-          offseat = -(offseat + (offseat > 0 ? 1 : -1))
-          if (offseat > 0) {
-            this.control.moveAvatarRight(offseat)
-          } else {
-            this.control.moveAvatarLeft(-offseat)
-          }
-        }
-      }
-
-      this.avatar.undoAction(action)
-
+      this.avatar.undoAction()
       if (isDownCollision) {
         updateArena(this.avatar)
         this.avatar.resetPosition()
@@ -45,23 +35,33 @@ class Game {
     }
   }
 
+  rotateCollisionCheck() {
+    for (let offseat = 0; hasCollision(this.avatar); offseat++) {
+      if (isEven(offseat)) {
+        this.control.moveAvatarRight(offseat)
+      } else {
+        this.control.moveAvatarLeft(offseat)
+      }
+    }
+  }
+
   setupController() {
     document.addEventListener('keydown', event => {
       if (validateEventKey(event, LEFT_ARROW)) {
         this.control.moveAvatarLeft(1)
-        this.collisionCheck('MOVE')
+        this.moveCollisionCheck()
       } else if (validateEventKey(event, RIGHT_ARROW)) {
         this.control.moveAvatarRight(1)
-        this.collisionCheck('MOVE')
+        this.moveCollisionCheck()
       } else if (validateEventKey(event, DOWN_ARROW)) {
         this.control.moveAvatarDown(1)
-        this.collisionCheck('MOVE', true)
+        this.moveCollisionCheck(true)
       } else if (validateEventKey(event, Z_KEY)) {
         this.control.rotateAvatar(ROTATE_LEFT)
-        this.collisionCheck('ROTATE')
+        this.rotateCollisionCheck()
       } else if (validateEventKey(event, X_KEY)) {
         this.control.rotateAvatar(ROTATE_RIGHT)
-        this.collisionCheck('ROTATE')
+        this.rotateCollisionCheck()
       }
     })
   }

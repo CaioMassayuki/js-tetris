@@ -16,18 +16,8 @@ class Avatar {
     this.position = { x: 3, y: 0 }
   }
 
-  undoAction(action) {
-    switch (action) {
-      case 'MOVE':
-        this.position = { ...this.savedPosition }
-        break
-      case 'ROTATE':
-        this.tetromino = this.savedStance ? [...this.savedStance] : this.tetromino
-        break
-      default:
-        this.position = { ...this.savedPosition }
-        this.tetromino = this.savedStance ? [...this.savedStance] : this.tetromino
-    }
+  undoAction() {
+    this.position = { ...this.savedPosition }
   }
 
   savePosition() {

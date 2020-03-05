@@ -47,19 +47,19 @@ class Game {
     document.addEventListener('keydown', event => {
       if (validateEventKey(event, LEFT_ARROW)) {
         this.control.moveAvatarLeft(1)
-        moveCollisionCheck()
+        this.moveCollisionCheck()
       } else if (validateEventKey(event, RIGHT_ARROW)) {
         this.control.moveAvatarRight(1)
-        moveCollisionCheck()
+        this.moveCollisionCheck()
       } else if (validateEventKey(event, DOWN_ARROW)) {
         this.control.moveAvatarDown(1)
-        moveCollisionCheck(true)
+        this.moveCollisionCheck(true)
       } else if (validateEventKey(event, Z_KEY)) {
         this.control.rotateAvatar(ROTATE_LEFT)
-        rotateCollisionCheck()
+        this.rotateCollisionCheck()
       } else if (validateEventKey(event, X_KEY)) {
         this.control.rotateAvatar(ROTATE_RIGHT)
-        rotateCollisionCheck()
+        this.rotateCollisionCheck()
       }
     })
   }

@@ -1,13 +1,11 @@
 import { LEFT_ARROW, RIGHT_ARROW, DOWN_ARROW, Z_KEY, X_KEY, ROTATE_RIGHT, ROTATE_LEFT } from './constants'
 import { hasCollision, updateArena } from './physics'
+import { isEven } from './utils/mathHelpers'
 import validateEventKey from './utils/validateEventKey'
 import Clock from './clock'
 import Avatar from './Avatar'
 import Joystick from './Joystick'
 import Playfield from './playfield'
-
-const isEven = num => num % 2 === 0
-const isOdd = num => !isEven(num)
 
 class Game {
   constructor() {
@@ -49,19 +47,19 @@ class Game {
     document.addEventListener('keydown', event => {
       if (validateEventKey(event, LEFT_ARROW)) {
         this.control.moveAvatarLeft(1)
-        this.moveCollisionCheck()
+        moveCollisionCheck()
       } else if (validateEventKey(event, RIGHT_ARROW)) {
         this.control.moveAvatarRight(1)
-        this.moveCollisionCheck()
+        moveCollisionCheck()
       } else if (validateEventKey(event, DOWN_ARROW)) {
         this.control.moveAvatarDown(1)
-        this.moveCollisionCheck(true)
+        moveCollisionCheck(true)
       } else if (validateEventKey(event, Z_KEY)) {
         this.control.rotateAvatar(ROTATE_LEFT)
-        this.rotateCollisionCheck()
+        rotateCollisionCheck()
       } else if (validateEventKey(event, X_KEY)) {
         this.control.rotateAvatar(ROTATE_RIGHT)
-        this.rotateCollisionCheck()
+        rotateCollisionCheck()
       }
     })
   }

@@ -17,13 +17,13 @@ class Game {
   isDropTick(dropInterval = this.clock.dropInterval) {
     if (this.clock.dropCounter > dropInterval) {
       this.clock.dropCounter = 0
+      this.avatar.savePosition()
       this.control.moveAvatarDown(1)
       this.moveCollisionCheck(true)
     }
   }
 
   moveCollisionCheck(isDownCollision = false) {
-    console.log(this.avatar.position)
     if (hasCollision(this.avatar)) {
       this.avatar.undoAction('MOVE')
       if (isDownCollision) {
@@ -36,8 +36,8 @@ class Game {
 
   rotateCollisionCheck() {
     let trueBothCheck = []
-    // TODO lógica salvar movimentos feitos no LEFT e RIGHT para que o trueBothCheck consiga resetar a posição corretamente
-    for (let offseat = 0; hasCollision(this.avatar); offseat++) {
+    this.avatar.savePosition()
+    for (let offseat = 1; hasCollision(this.avatar); offseat++) {
       let collisionLocation
       if (collisionLocation !== 'BOTTOM') {
         collisionLocation = hasRotateCollision(this.avatar)
@@ -57,8 +57,12 @@ class Game {
           trueBothCheck.push(collisionLocation)
           break
         case 'BOTH':
-          console.log(`HELLOS`)
+          // TODO Both precisa tentar mover a peça para cima antes de realmente cancelar o movimento, problema é quantas vezes para cima e se isso pode criar um novo bug
+          console.log('BOTH')
+          this.control.moveAvatarUp(1)
+          
           this.avatar.undoAction('ROTATE')
+          this.avatar.undoAction('MOVE')
           return
         default:
           this.control.moveAvatarUp(1)
@@ -70,6 +74,7 @@ class Game {
 
   setupController() {
     document.addEventListener('keydown', event => {
+      this.avatar.savePosition()
       if (validateEventKey(event, LEFT_ARROW)) {
         this.control.moveAvatarLeft(1)
         this.moveCollisionCheck()

@@ -5,18 +5,25 @@ import { isEven } from './utils/mathHelpers'
 const isTetrominoOccupiedCell = (tetromino, row, cell) => tetromino[row][cell] !== 0
 const isArenaOutsideRow = (row, avatarPositionY) => !Playfield.arena[row + avatarPositionY]
 const isArenaOccupiedCell = (row, cell, avatarPosition) => {
-  return isArenaOutsideRow(row, avatarPosition.y) || Playfield.arena[row + avatarPosition.y][cell + avatarPosition.x] !== 0
+  return (
+    isArenaOutsideRow(row, avatarPosition.y) || Playfield.arena[row + avatarPosition.y][cell + avatarPosition.x] !== 0
+  )
 }
 const isBottomCollision = (tetromino, avatarPosition) => {
   if (isEven(tetromino.length)) {
     if (
-      (isTetrominoOccupiedCell(tetromino, tetromino.length - 1, 1) && isArenaOccupiedCell(tetromino.length - 1, 1, avatarPosition)) ||
-      (isTetrominoOccupiedCell(tetromino, tetromino.length - 1, 2) && isArenaOccupiedCell(tetromino.length - 1, 2, avatarPosition))
+      (isTetrominoOccupiedCell(tetromino, tetromino.length - 1, 1) &&
+        isArenaOccupiedCell(tetromino.length - 1, 1, avatarPosition)) ||
+      (isTetrominoOccupiedCell(tetromino, tetromino.length - 1, 2) &&
+        isArenaOccupiedCell(tetromino.length - 1, 2, avatarPosition))
     ) {
       return true
     }
   }
-  if (isTetrominoOccupiedCell(tetromino, tetromino.length - 1, 1) && isArenaOccupiedCell(tetromino.length - 1, 1, avatarPosition)) {
+  if (
+    isTetrominoOccupiedCell(tetromino, tetromino.length - 1, 1) &&
+    isArenaOccupiedCell(tetromino.length - 1, 1, avatarPosition)
+  ) {
     return true
   }
   return false
@@ -25,11 +32,16 @@ const isBottomCollision = (tetromino, avatarPosition) => {
 const isBothCollision = (tetromino, row, avatarPosition) => {
   if (isEven(tetromino.length)) {
     if (
-      ((isTetrominoOccupiedCell(tetromino, row, tetromino[row].length - 1) && isTetrominoOccupiedCell(tetromino, row, 0)) ||
-        (isTetrominoOccupiedCell(tetromino, row, tetromino[row].length - 2) && isTetrominoOccupiedCell(tetromino, row, 0)) ||
-        (isTetrominoOccupiedCell(tetromino, row, tetromino[row].length - 1) && isTetrominoOccupiedCell(tetromino, row, 1))) &&
-      ((isArenaOccupiedCell(row, tetromino.length - 1, avatarPosition) && isArenaOccupiedCell(row, 0, avatarPosition)) ||
-        (isArenaOccupiedCell(row, tetromino.length - 2, avatarPosition) && isArenaOccupiedCell(row, 0, avatarPosition)) ||
+      ((isTetrominoOccupiedCell(tetromino, row, tetromino[row].length - 1) &&
+        isTetrominoOccupiedCell(tetromino, row, 0)) ||
+        (isTetrominoOccupiedCell(tetromino, row, tetromino[row].length - 2) &&
+          isTetrominoOccupiedCell(tetromino, row, 0)) ||
+        (isTetrominoOccupiedCell(tetromino, row, tetromino[row].length - 1) &&
+          isTetrominoOccupiedCell(tetromino, row, 1))) &&
+      ((isArenaOccupiedCell(row, tetromino.length - 1, avatarPosition) &&
+        isArenaOccupiedCell(row, 0, avatarPosition)) ||
+        (isArenaOccupiedCell(row, tetromino.length - 2, avatarPosition) &&
+          isArenaOccupiedCell(row, 0, avatarPosition)) ||
         (isArenaOccupiedCell(row, tetromino.length - 1, avatarPosition) && isArenaOccupiedCell(row, 1, avatarPosition)))
     ) {
       return true

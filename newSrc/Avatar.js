@@ -5,8 +5,10 @@ import { flipMatrix, rotateMatrix } from './utils/matrixHelpers'
 class Avatar {
   constructor(position, tetromino) {
     this.tetrominos = new Tetrominos()
-    this.bag = [...this.tetrominos.pieces]
-    this.tetromino = tetromino || this.bagRandomizer()
+    this.bag = ['J', 'L', 'I']
+    // this.bag = [...this.tetrominos.pieces]
+    // this.tetromino = this.tetromino || this.bagRandomizer()
+    this.tetromino = this.tetromino || this.testRandomizer()
     this.position = position || { x: 3, y: 0 }
     this.savedPosition = null
     this.savedStance = null
@@ -16,12 +18,25 @@ class Avatar {
     this.position = { x: 3, y: 0 }
   }
 
-  undoAction() {
-    this.position = { ...this.savedPosition }
+  undoAction(action) {
+    switch (action) {
+      case 'ROTATE':
+        this.tetromino = [...this.savedStance]
+        break
+      case 'MOVE':
+        this.position = { ...this.savedPosition }
+        break
+      default:
+        console.log('NOTHING')
+    }
   }
 
   savePosition() {
     this.savedPosition = { ...this.position }
+  }
+
+  saveStance() {
+    this.savedStance = [...this.tetromino]
   }
 
   rotate(direction) {
@@ -30,6 +45,17 @@ class Avatar {
     } else {
       this.tetromino = flipMatrix(rotateMatrix(this.tetromino))
     }
+  }
+
+  testRandomizer() {
+    if (this.bag.length === 0) {
+      this.bag = ['J', 'L', 'I']
+    }
+    const tetromino = this.tetrominos.matrixes[this.bag.splice(0, 1)]
+    if (!this.tetromino) {
+      return tetromino
+    }
+    this.tetromino = tetromino
   }
 
   bagRandomizer() {

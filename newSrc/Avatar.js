@@ -5,7 +5,7 @@ import { flipMatrix, rotateMatrix } from './utils/matrixHelpers'
 class Avatar {
   constructor(position, tetromino) {
     this.tetrominos = new Tetrominos()
-    this.bag = ['J', 'L', 'I']
+    this.bag = ['L','J', 'I']
     // this.bag = [...this.tetrominos.pieces]
     // this.tetromino = this.tetromino || this.bagRandomizer()
     this.tetromino = this.tetromino || this.testRandomizer()
@@ -47,9 +47,10 @@ class Avatar {
     }
   }
 
+  // TODO Implementar alguma estrutura de teste para fazer as validações de forma mais facil dentro do próprio jogo
   testRandomizer() {
     if (this.bag.length === 0) {
-      this.bag = ['J', 'L', 'I']
+      this.bag = ['L','J', 'I']
     }
     const tetromino = this.tetrominos.matrixes[this.bag.splice(0, 1)]
     if (!this.tetromino) {

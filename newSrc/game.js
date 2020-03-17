@@ -33,41 +33,50 @@ class Game {
       }
     }
   }
-
+  
   rotateCollisionCheck() {
+    // TODO Ajustar todos as variaveis largadas em um objeto que armazena as informações sobre a colisão
     let trueBothCheck = []
+    let bothCount = 0
     this.avatar.savePosition()
+
     for (let offseat = 1; hasCollision(this.avatar); offseat++) {
       let collisionLocation
+
       if (collisionLocation !== 'BOTTOM') {
         collisionLocation = hasRotateCollision(this.avatar)
       }
-      if (offseat > 2) offseat = 0
+
       if (trueBothCheck.find(sides => sides === 'LEFT') && trueBothCheck.find(sides => sides === 'RIGHT')) {
         collisionLocation = 'BOTH'
-        console.log(collisionLocation)
       }
+
+      if (offseat > 2) offseat = 0
       switch (collisionLocation) {
         case 'LEFT':
-          this.control.moveAvatarRight(offseat)
+          this.control.moveAvatarRight(1)
           trueBothCheck.push(collisionLocation)
           break
         case 'RIGHT':
-          this.control.moveAvatarLeft(offseat)
+          this.control.moveAvatarLeft(1)
           trueBothCheck.push(collisionLocation)
           break
         case 'BOTH':
-          // TODO Both precisa tentar mover a peça para cima antes de realmente cancelar o movimento, problema é quantas vezes para cima e se isso pode criar um novo bug
-          console.log('BOTH')
-          this.control.moveAvatarUp(1)
-          
-          this.avatar.undoAction('ROTATE')
-          this.avatar.undoAction('MOVE')
-          return
+          if (bothCount < 1) {
+            this.control.moveAvatarUp(1)
+            bothCount++
+          } else {
+            this.avatar.undoAction('ROTATE')
+            this.avatar.undoAction('MOVE')
+          }
+          break
         default:
+          if (trueBothCheck.length > 0) {
+            this.control.moveAvatarUp(2)
+          }
           this.control.moveAvatarUp(1)
       }
-      console.log(collisionLocation, offseat)
+      console.log(collisionLocation)
     }
     console.log(this.avatar.tetromino, 'END')
   }
